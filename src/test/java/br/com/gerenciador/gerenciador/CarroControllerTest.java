@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,6 @@ class CarroControllerTest {
 	@Autowired
 	private CarroService carroService;
 
-
 	@Test
 	void salvarCarro_deveTersucesso_validarDados() throws Exception {
 		Carro carro = criarCarro();
@@ -51,6 +51,25 @@ class CarroControllerTest {
 		assertThat(carroSalvo.get().getMarca()).isEqualTo("Fiat");
 		assertThat(carroSalvo.get().getKilometragem()).isEqualTo("87mil");
 
+	}
+
+	@Test
+	void consultarCarro_deveTersucessoAoBuscarCarroPorMaecoOuModelo_validarDados() throws Exception {
+		Carro carro = criarCarro();
+
+		Carro carro1 = criarCarro();
+		carro1.setMarca("toyota");
+		carro1.setModelo("corolla");
+
+		carroService.salvarCarro(carro);
+
+		carroService.salvarCarro(carro1);
+
+		List<Carro> carros = carroService.pesquisarCarroPorMarcaOuModelo("ota", null);
+
+		Carro car = carros.get(0);
+
+		assertThat(car.getMarca()).isEqualTo("toyota");
 	}
 
 	public Carro criarCarro() {
