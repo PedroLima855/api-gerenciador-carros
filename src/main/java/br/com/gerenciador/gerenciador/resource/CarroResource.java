@@ -29,4 +29,10 @@ public class CarroResource {
 
         return carroService.pesquisarCarroPorMarcaOuModelo(marca, modelo);
     }
+
+    @DeleteMapping("/{idCarro}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apagarAluno(@PathVariable Long idCarro) {
+        carroService.excluirCarro(idCarro);
+    }
 }
