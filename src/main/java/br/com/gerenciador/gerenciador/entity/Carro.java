@@ -30,6 +30,4 @@ public class Carro {
     private String kilometragem;
 
     private String cor;
-
-    private Boolean vendido;
 }

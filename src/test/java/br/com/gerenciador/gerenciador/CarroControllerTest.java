@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -102,8 +101,6 @@ class CarroControllerTest {
 		carro.setModelo("Uno");
 		carro.setAno("2008");
 		carro.setKilometragem("87mil");
-		carro.setVendido(false);
-
 
 		return carro;
 
