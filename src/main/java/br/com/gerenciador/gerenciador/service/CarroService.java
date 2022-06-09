@@ -31,4 +31,14 @@ public class CarroService {
         carroRepository.deleteById(idCarro);
     }
 
+    public Carro editarCarro(Long id, Carro carro) {
+        carro.setId(id);
+        carro = carroRepository.save(carro);
+        return carro;
+    }
+
+    public Optional<Carro> findById(Long id) {
+        return carroRepository.findById(id);
+    }
+
 }

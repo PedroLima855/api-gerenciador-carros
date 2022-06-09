@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/carros")
@@ -34,5 +35,18 @@ public class CarroResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void apagarAluno(@PathVariable Long idCarro) {
         carroService.excluirCarro(idCarro);
+    }
+
+    @PutMapping("/{idCarro}")
+    public ResponseEntity<Carro> atualizarTarefa(@RequestBody Carro carro, @PathVariable Long idCarro) {
+
+        Optional<Carro> retorno = carroService.findById(idCarro);
+
+        if (!retorno.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Carro carroEditado = carroService.editarCarro(idCarro, carro);
+        return ResponseEntity.ok(carroEditado);
     }
 }

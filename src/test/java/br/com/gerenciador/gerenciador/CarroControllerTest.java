@@ -5,8 +5,8 @@ import br.com.gerenciador.gerenciador.repository.CarroRepository;
 import br.com.gerenciador.gerenciador.service.CarroService;
 import br.com.gerenciador.gerenciador.util.TestUtil;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class CarroControllerTest {
 
 	private static final String CARRO_RESOURCE_URL = "/carros";
+	private static final String CARRO_RESOURCE_URL_ID = CARRO_RESOURCE_URL + "/{idCarro}";
 
 	@Autowired
 	private MockMvc carroController;
@@ -45,12 +46,6 @@ class CarroControllerTest {
 
 		carroController.perform(post(CARRO_RESOURCE_URL).contentType(MediaType.APPLICATION_JSON)
 				.content(TestUtil.convertObjectToJsonBytes(carro))).andExpect(status().isCreated());
-		Optional<Carro> carroSalvo = carroRepository.findById(carro.getId());
-
-		assertThat(carroSalvo.get().getAno()).isEqualTo("2008");
-		assertThat(carroSalvo.get().getMarca()).isEqualTo("Fiat");
-		assertThat(carroSalvo.get().getKilometragem()).isEqualTo("87mil");
-
 	}
 
 	@Test
@@ -71,6 +66,33 @@ class CarroControllerTest {
 
 		assertThat(car.getMarca()).isEqualTo("toyota");
 	}
+
+	@Test
+	void exclurCarro_deveTersucessoAoExcluirCarro() throws Exception {
+		Carro carro = criarCarro();
+
+		Carro carroSalvo = carroService.salvarCarro(carro);
+
+		carroController.perform(delete(CARRO_RESOURCE_URL_ID, carroSalvo.getId()).contentType(MediaType.APPLICATION_JSON)
+				.content(TestUtil.convertObjectToJsonBytes(carro))).andExpect(status().isNoContent());
+	}
+
+	@Test
+	void editarCarro_deveEditarCarro() throws Exception {
+		Carro carro = criarCarro();
+
+		Carro carroSalvo = carroService.salvarCarro(carro);
+
+		carroSalvo.setModelo("toyota");
+
+		carroController.perform(put(CARRO_RESOURCE_URL_ID, carroSalvo.getId())
+						.contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(carroSalvo)))
+				.andExpect(status().isOk());
+
+		assertThat(carroSalvo.getModelo()).isEqualTo("toyota");
+
+	}
+
 
 	public Carro criarCarro() {
 
