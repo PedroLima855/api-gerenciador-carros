@@ -18,12 +18,14 @@ public class CarroResource {
     private CarroService carroService;
 
     @PostMapping()
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Carro> salvarCarro(@RequestBody Carro carro) {
         Carro carroSalvo = carroService.salvarCarro(carro);
         return ResponseEntity.status(HttpStatus.CREATED).body(carroSalvo);
     }
 
     @GetMapping()
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseStatus(HttpStatus.OK)
     public List<Carro> listarCarros(@RequestParam(value = "titulo", required = false) String marca,
                                     @RequestParam(value = "descricao", required = false) String modelo) {
@@ -32,12 +34,14 @@ public class CarroResource {
     }
 
     @DeleteMapping("/{idCarro}")
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void apagarAluno(@PathVariable Long idCarro) {
         carroService.excluirCarro(idCarro);
     }
 
     @PutMapping("/{idCarro}")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Carro> atualizarTarefa(@RequestBody Carro carro, @PathVariable Long idCarro) {
 
         Optional<Carro> retorno = carroService.findById(idCarro);
