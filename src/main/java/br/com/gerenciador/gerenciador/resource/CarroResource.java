@@ -27,8 +27,8 @@ public class CarroResource {
     @GetMapping()
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseStatus(HttpStatus.OK)
-    public List<Carro> listarCarros(@RequestParam(value = "titulo", required = false) String marca,
-                                    @RequestParam(value = "descricao", required = false) String modelo) {
+    public List<Carro> listarCarros(@RequestParam(value = "marca", required = false) String marca,
+                                    @RequestParam(value = "modelo", required = false) String modelo) {
 
         return carroService.pesquisarCarroPorMarcaOuModelo(marca, modelo);
     }
